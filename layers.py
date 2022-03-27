@@ -39,7 +39,7 @@ def icp_pytorch(src, dst, max_iter, threshold=0.005, ratio=0.5):
 
         # 4. Rotation matrix and translation vector
         R = torch.mm(U, V.T)
-        t = dst_temp_center - torch.mm(R, src_center.unsqueeze(1)).squeeze()
+        t = dst_temp_center - torch.mm(R.T, src_center.unsqueeze(1)).squeeze()
 
         # 5. Transform
         src = torch.mm(src, R) + t.unsqueeze(0)
