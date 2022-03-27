@@ -102,9 +102,10 @@ __global__ void NearestNeighborKernel(
       scalar_t diff = x_d - y_d;
       dist += diff * diff;
     }
-    min_dist = (j == tid) ? dist : min_dist;
-    min_idx = (dist <= min_dist) ? j : min_idx;
-    min_dist = (dist <= min_dist) ? dist : min_dist;
+    scalar_t distSqrt = sqrt(dist);
+    min_dist = (j == tid) ? distSqrt : min_dist;
+    min_idx = (distSqrt <= min_dist) ? j : min_idx;
+    min_dist = (distSqrt <= min_dist) ? distSqrt : min_dist;
   }
   min_dists[tid] = min_dist;
   min_idxs[tid] = min_idx;
@@ -181,9 +182,10 @@ __global__ void NearestNeighborKernelD3(
     scalar_t dy = y - points2[n * (P2 * D) + j * D + 1];
     scalar_t dz = z - points2[n * (P2 * D) + j * D + 2];
     scalar_t dist = dx * dx + dy * dy + dz * dz;
-    min_dist = (j == tid) ? dist : min_dist;
-    min_idx = (dist <= min_dist) ? j : min_idx;
-    min_dist = (dist <= min_dist) ? dist : min_dist;
+    scalar_t distSqrt = sqrt(dist);
+    min_dist = (j == tid) ? distSqrt : min_dist;
+    min_idx = (distSqrt <= min_dist) ? j : min_idx;
+    min_dist = (distSqrt <= min_dist) ? distSqrt : min_dist;
   }
   min_dists[tid] = min_dist;
   min_idxs[tid] = min_idx;

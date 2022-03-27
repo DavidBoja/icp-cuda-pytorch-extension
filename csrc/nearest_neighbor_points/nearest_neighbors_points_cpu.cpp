@@ -28,8 +28,9 @@ std::pair<at::Tensor, at::Tensor> NearestNeighborIdxCpu(at::Tensor p1, at::Tenso
           float diff = p1_a[n][i1][d] - p2_a[n][i2][d];
           dist += diff * diff;
         }
-        if (min_dist == -1 || dist < min_dist) {
-          min_dist = dist;
+        float distSqrt = sqrt(dist);
+        if (min_dist == -1 || distSqrt < min_dist) {
+          min_dist = distSqrt;
           min_idx = i2;
         }
       }

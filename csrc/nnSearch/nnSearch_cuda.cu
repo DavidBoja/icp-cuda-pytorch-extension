@@ -20,7 +20,7 @@ __global__ void nnSearch(const int nthreads, const int M, const T *query,
     float queryY = query[index * 3 + 1];
     float queryZ = query[index * 3 + 2];
 
-    float refX, refY, refZ, tempDist;
+    float refX, refY, refZ, tempDist, tempDistSqrt;
 
     for (int j = 0; j < M; j++) {
       refX = ref[j * 3 + 0];
@@ -30,8 +30,10 @@ __global__ void nnSearch(const int nthreads, const int M, const T *query,
       tempDist = (queryX - refX) * (queryX - refX) +
                  (queryY - refY) * (queryY - refY) +
                  (queryZ - refZ) * (queryZ - refZ);
-      if (tempDist < minDist) {
-        minDist = tempDist;
+      tempDistSqrt = sqrt(tempDist);
+
+      if (tempDistSqrt < minDist) {
+        minDist = tempDistSqrt;
         minIdx = j;
       }
     } // forj
